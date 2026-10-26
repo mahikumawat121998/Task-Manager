@@ -788,155 +788,175 @@ export default function TaskFlowApp() {
       <main className="app-main">
         {/* Top App Bar */}
         <header className="app-topbar">
-          <div className="topbar-left">
-            <button
-              className="icon-btn mobile-menu-toggle"
-              onClick={() => setSidebarOpen(true)}
-              aria-label="Toggle Navigation Sidebar"
-            >
-              <Menu size={20} />
-            </button>
-            <div className="page-title-group">
-              <h1 className="page-title">
-                {currentView === 'kanban' ? 'Kanban Board' : 'Task List'}
-              </h1>
-              <p className="page-subtitle">
-                {currentView === 'kanban'
-                  ? 'Drag, organize, and advance tasks across workflow stages.'
-                  : 'Dense filterable view with inline status and subtask progress.'}
-              </p>
-            </div>
-          </div>
-
-          <div className="topbar-right">
-            {/* MongoDB Connection Status Pill */}
-            <div
-              className={`db-status-chip ${dbStatus.connected ? 'connected' : 'memory-mode'}`}
-              title={dbStatus.message}
-            >
-              <span className="status-pulsing-dot" />
-              <Database size={14} />
-              <span>{dbStatus.connected ? 'MongoDB Active' : 'Demo Memory Mode'}</span>
-            </div>
-
-            {/* Global Search Input */}
-            <div className="search-box">
-              <Search className="search-icon" size={16} />
-              <input
-                ref={searchInputRef}
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search tasks, notes... (/)"
-                autoComplete="off"
-              />
-              {searchQuery ? (
-                <button
-                  className="search-clear-btn"
-                  onClick={() => setSearchQuery('')}
-                  aria-label="Clear Search"
-                >
-                  &times;
-                </button>
-              ) : (
-                <kbd className="search-kbd">/</kbd>
-              )}
-            </div>
-
-            {/* Sort Order Selector */}
-            <div className="custom-select-wrapper">
-              <select
-                className="custom-select"
-                value={sortOrder}
-                onChange={(e) => setSortOrder(e.target.value)}
-                title="Sort Tasks"
+          <div className="topbar-inner">
+            <div className="topbar-left">
+              <button
+                className="icon-btn mobile-menu-toggle"
+                onClick={() => setSidebarOpen(true)}
+                aria-label="Toggle Navigation Sidebar"
               >
-                <option value="createdAt-desc">Newest First</option>
-                <option value="createdAt-asc">Oldest First</option>
-                <option value="dueDate-asc">Due Date (Earliest)</option>
-                <option value="dueDate-desc">Due Date (Latest)</option>
-                <option value="priority-desc">Priority (High to Low)</option>
-                <option value="title-asc">Title (A &rarr; Z)</option>
-              </select>
+                <Menu size={20} />
+              </button>
+              <div className="page-title-group">
+                <h1 className="page-title">
+                  {currentView === 'kanban' ? 'Kanban Board' : 'Task List'}
+                </h1>
+                <p className="page-subtitle">
+                  {currentView === 'kanban'
+                    ? 'Drag, organize, and advance tasks across workflow stages.'
+                    : 'Dense filterable view with inline status and subtask progress.'}
+                </p>
+              </div>
             </div>
 
-            {/* Sound Toggle */}
-            <button
-              className="icon-btn"
-              onClick={() => {
-                setSoundEnabled(!soundEnabled);
-                showToast(soundEnabled ? 'Sound muted' : 'Sound enabled', 'info');
-              }}
-              title={soundEnabled ? 'Mute Audio Effects' : 'Enable Audio Effects'}
-            >
-              {soundEnabled ? <Volume2 size={18} /> : <VolumeX size={18} />}
-            </button>
+            <div className="topbar-right">
+              {/* MongoDB Connection Status Pill */}
+              <div
+                className={`db-status-chip ${dbStatus.connected ? 'connected' : 'memory-mode'}`}
+                title={dbStatus.message}
+              >
+                <span className="status-pulsing-dot" />
+                <Database size={14} />
+                <span>{dbStatus.connected ? 'MongoDB Active' : 'Demo Memory Mode'}</span>
+              </div>
 
-            {/* Theme Toggle */}
-            <button
-              className="icon-btn theme-toggle-btn"
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
-            >
-              {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
+              {/* Global Search Input */}
+              <div className="search-box">
+                <Search className="search-icon" size={16} />
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search tasks, notes... (/)"
+                  autoComplete="off"
+                />
+                {searchQuery ? (
+                  <button
+                    className="search-clear-btn"
+                    onClick={() => setSearchQuery('')}
+                    aria-label="Clear Search"
+                  >
+                    &times;
+                  </button>
+                ) : (
+                  <kbd className="search-kbd">/</kbd>
+                )}
+              </div>
 
-            {/* Primary Top Action */}
-            <button
-              className="btn btn-primary new-task-trigger"
-              onClick={() => openCreateModal()}
-              id="btn-create-task-topbar"
-            >
-              <Plus size={16} strokeWidth={2.5} />
-              <span>Add Task</span>
-            </button>
+              {/* Sort Order Selector */}
+              <div className="custom-select-wrapper">
+                <select
+                  className="custom-select"
+                  value={sortOrder}
+                  onChange={(e) => setSortOrder(e.target.value)}
+                  title="Sort Tasks"
+                >
+                  <option value="createdAt-desc">Newest First</option>
+                  <option value="createdAt-asc">Oldest First</option>
+                  <option value="dueDate-asc">Due Date (Earliest)</option>
+                  <option value="dueDate-desc">Due Date (Latest)</option>
+                  <option value="priority-desc">Priority (High to Low)</option>
+                  <option value="title-asc">Title (A &rarr; Z)</option>
+                </select>
+              </div>
+
+              {/* Sound Toggle */}
+              <button
+                className="icon-btn"
+                onClick={() => {
+                  setSoundEnabled(!soundEnabled);
+                  showToast(soundEnabled ? 'Sound muted' : 'Sound enabled', 'info');
+                }}
+                title={soundEnabled ? 'Mute Audio Effects' : 'Enable Audio Effects'}
+              >
+                {soundEnabled ? <Volume2 size={18} /> : <VolumeX size={18} />}
+              </button>
+
+              {/* Theme Toggle */}
+              <button
+                className="icon-btn theme-toggle-btn"
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
+              >
+                {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+              </button>
+
+              {/* Primary Top Action */}
+              <button
+                className="btn btn-primary new-task-trigger"
+                onClick={() => openCreateModal()}
+                id="btn-create-task-topbar"
+              >
+                <Plus size={16} strokeWidth={2.5} />
+                <span>Add Task</span>
+              </button>
+            </div>
           </div>
         </header>
 
+        <div className="app-content-container">
+
         {/* Productivity Metrics Strip */}
         <section className="metrics-strip">
-          <div className="metric-card">
-            <div className="metric-icon-wrap icon-blue">
-              <Layers size={20} />
-            </div>
-            <div className="metric-content">
-              <span className="metric-label">Total Tasks</span>
-              <span className="metric-number">{metrics.total}</span>
-            </div>
-          </div>
-
-          <div className="metric-card">
-            <div className="metric-icon-wrap icon-amber">
-              <Clock size={20} />
-            </div>
-            <div className="metric-content">
-              <span className="metric-label">In Progress</span>
-              <span className="metric-number">{metrics.inProgress}</span>
-            </div>
-          </div>
-
-          <div className="metric-card">
-            <div className="metric-icon-wrap icon-green">
-              <CheckCircle2 size={20} />
-            </div>
-            <div className="metric-content">
-              <span className="metric-label">Completed</span>
-              <div className="metric-inline">
-                <span className="metric-number">{metrics.completed}</span>
-                <span className="metric-subtext">({metrics.rate}%)</span>
+          {loading ? (
+            <>
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="metric-card skeleton-metric-card">
+                  <div className="skeleton skeleton-icon" />
+                  <div className="metric-content" style={{ gap: '8px', flex: 1 }}>
+                    <div className="skeleton skeleton-line" style={{ width: '70px', height: '12px' }} />
+                    <div className="skeleton skeleton-line" style={{ width: '48px', height: '26px' }} />
+                  </div>
+                </div>
+              ))}
+            </>
+          ) : (
+            <>
+              <div className="metric-card">
+                <div className="metric-icon-wrap icon-blue">
+                  <Layers size={20} />
+                </div>
+                <div className="metric-content">
+                  <span className="metric-label">Total Tasks</span>
+                  <span className="metric-number">{metrics.total}</span>
+                </div>
               </div>
-            </div>
-          </div>
 
-          <div className="metric-card">
-            <div className="metric-icon-wrap icon-rose">
-              <AlertTriangle size={20} />
-            </div>
-            <div className="metric-content">
-              <span className="metric-label">Overdue / Urgent</span>
-              <span className="metric-number">{metrics.overdue + metrics.urgentCount}</span>
-            </div>
-          </div>
+              <div className="metric-card">
+                <div className="metric-icon-wrap icon-amber">
+                  <Clock size={20} />
+                </div>
+                <div className="metric-content">
+                  <span className="metric-label">In Progress</span>
+                  <span className="metric-number">{metrics.inProgress}</span>
+                </div>
+              </div>
+
+              <div className="metric-card">
+                <div className="metric-icon-wrap icon-green">
+                  <CheckCircle2 size={20} />
+                </div>
+                <div className="metric-content">
+                  <span className="metric-label">Completed</span>
+                  <div className="metric-inline">
+                    <span className="metric-number">{metrics.completed}</span>
+                    <span className="metric-subtext">({metrics.rate}%)</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="metric-card">
+                <div className="metric-icon-wrap icon-rose">
+                  <AlertTriangle size={20} />
+                </div>
+                <div className="metric-content">
+                  <span className="metric-label">Overdue / Urgent</span>
+                  <span className="metric-number">{metrics.overdue + metrics.urgentCount}</span>
+                </div>
+              </div>
+            </>
+          )}
         </section>
 
         {/* Active Filters Pill Bar */}
@@ -973,12 +993,88 @@ export default function TaskFlowApp() {
           </section>
         )}
 
-        {/* Loading Indicator */}
-        {loading && (
-          <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--text-muted)' }}>
-            <RefreshCw size={24} className="spin-animation" style={{ marginBottom: '8px' }} />
-            <p>Loading your tasks...</p>
-          </div>
+        {/* SKELETON KANBAN LOADER */}
+        {loading && currentView === 'kanban' && (
+          <section className="view-panel active-view" id="view-kanban-skeleton">
+            <div className="kanban-columns-grid">
+              {[
+                { label: 'To Do', color: 'var(--status-todo)' },
+                { label: 'In Progress', color: 'var(--status-inprogress)' },
+                { label: 'Under Review', color: 'var(--status-review)' },
+                { label: 'Completed', color: 'var(--status-completed)' },
+              ].map((col, idx) => (
+                <div key={idx} className="kanban-column skeleton-column">
+                  <div className="column-header">
+                    <div className="column-title-group" style={{ gap: '10px' }}>
+                      <span className="column-status-indicator" style={{ background: col.color, opacity: 0.6 }} />
+                      <div className="skeleton skeleton-line" style={{ width: '85px', height: '16px' }} />
+                    </div>
+                    <div className="skeleton skeleton-line" style={{ width: '24px', height: '18px', borderRadius: '12px' }} />
+                  </div>
+                  <div className="column-card-list">
+                    {[1, 2, 3].slice(0, 3 - (idx % 2)).map((cardIdx) => (
+                      <div key={cardIdx} className="task-card skeleton-task-card">
+                        <div className="card-top" style={{ marginBottom: '12px' }}>
+                          <div className="skeleton skeleton-line" style={{ width: '58px', height: '18px', borderRadius: '12px' }} />
+                          <div className="skeleton skeleton-circle" style={{ width: '18px', height: '18px' }} />
+                        </div>
+                        <div className="skeleton skeleton-line" style={{ width: `${82 - cardIdx * 10}%`, height: '16px', marginBottom: '8px' }} />
+                        <div className="skeleton skeleton-line" style={{ width: `${56 - cardIdx * 5}%`, height: '12px', marginBottom: '14px' }} />
+                        <div className="skeleton skeleton-line" style={{ width: '100%', height: '6px', borderRadius: '3px', marginBottom: '14px' }} />
+                        <div className="card-footer" style={{ borderTop: 'none', paddingTop: 0 }}>
+                          <div className="skeleton skeleton-line" style={{ width: '85px', height: '14px' }} />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* SKELETON LIST LOADER */}
+        {loading && currentView === 'list' && (
+          <section className="view-panel" id="view-list-skeleton">
+            <div className="list-view-container">
+              <div className="list-view-header">
+                <div className="list-col-check"></div>
+                <div className="list-col-title">Task Name</div>
+                <div className="list-col-priority">Priority</div>
+                <div className="list-col-status">Status</div>
+                <div className="list-col-due">Due Date</div>
+                <div className="list-col-subtasks">Subtasks</div>
+                <div className="list-col-actions">Actions</div>
+              </div>
+              <div className="list-tasks-wrapper">
+                {[1, 2, 3, 4, 5, 6].map((row) => (
+                  <div key={row} className="list-row skeleton-list-row">
+                    <div className="list-col-check">
+                      <div className="skeleton skeleton-circle" style={{ width: '18px', height: '18px' }} />
+                    </div>
+                    <div className="list-col-title-text" style={{ cursor: 'default' }}>
+                      <div className="skeleton skeleton-line" style={{ width: `${55 + (row * 7) % 35}%`, height: '16px' }} />
+                    </div>
+                    <div className="list-col-priority">
+                      <div className="skeleton skeleton-line" style={{ width: '56px', height: '20px', borderRadius: '12px' }} />
+                    </div>
+                    <div className="list-col-status">
+                      <div className="skeleton skeleton-line" style={{ width: '68px', height: '24px', borderRadius: '6px' }} />
+                    </div>
+                    <div className="list-col-due">
+                      <div className="skeleton skeleton-line" style={{ width: '88px', height: '16px' }} />
+                    </div>
+                    <div className="list-col-subtasks">
+                      <div className="skeleton skeleton-line" style={{ width: '32px', height: '14px' }} />
+                    </div>
+                    <div className="list-col-actions">
+                      <div className="skeleton skeleton-circle" style={{ width: '22px', height: '22px' }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
         )}
 
         {/* VIEW 1: KANBAN BOARD */}
@@ -1286,6 +1382,7 @@ export default function TaskFlowApp() {
             </div>
           </div>
         )}
+        </div>
       </main>
 
       {/* ------------------- TASK MODAL (CREATE & EDIT) ------------------- */}

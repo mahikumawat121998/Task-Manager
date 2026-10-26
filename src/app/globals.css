@@ -434,12 +434,17 @@ html, body {
   min-width: 0;
 }
 
+.app-content-container {
+  width: 100%;
+  max-width: 1760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
 /* ------------------- TOP APP BAR ------------------- */
 .app-topbar {
   height: var(--topbar-height);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   position: sticky;
   top: 0;
   z-index: 50;
@@ -449,6 +454,17 @@ html, body {
   border-bottom: 1px solid var(--border-color);
   margin: 0 -32px 24px;
   padding: 0 32px;
+}
+
+.topbar-inner {
+  width: 100%;
+  max-width: 1760px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
 }
 
 .topbar-left {
@@ -1229,6 +1245,81 @@ html, body {
   cursor: pointer;
 }
 
+/* ------------------- SKELETON LOADERS & SHIMMER ------------------- */
+.skeleton {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-sm);
+  position: relative;
+  overflow: hidden;
+  display: block;
+}
+
+[data-theme="light"] .skeleton {
+  background: rgba(15, 23, 42, 0.07);
+}
+
+.skeleton::after {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 35%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.08) 65%,
+    transparent 100%
+  );
+  animation: skeleton-shimmer 1.6s infinite ease-in-out;
+  content: '';
+}
+
+[data-theme="light"] .skeleton::after {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.5) 35%,
+    rgba(255, 255, 255, 0.85) 50%,
+    rgba(255, 255, 255, 0.5) 65%,
+    transparent 100%
+  );
+}
+
+@keyframes skeleton-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.skeleton-circle {
+  border-radius: var(--radius-full) !important;
+}
+
+.skeleton-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.skeleton-column {
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+.skeleton-task-card {
+  pointer-events: none;
+  cursor: default;
+}
+
+.skeleton-task-card:hover {
+  transform: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.skeleton-list-row {
+  pointer-events: none;
+}
+
 /* ------------------- EMPTY STATE ------------------- */
 .empty-state-card {
   background: var(--bg-card);
@@ -1729,5 +1820,118 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
   }
   .list-col-priority, .list-col-due, .list-col-subtasks {
     display: none;
+  }
+}
+
+/* ------------------- 80% ZOOM & LARGE DISPLAY OPTIMIZATION ------------------- */
+/*
+  When a user sets browser zoom to 80% (or uses Windows 125%/150% scaling at 80% zoom),
+  the effective viewport width expands significantly (1080p becomes 2400px; 1440p becomes 3200px).
+  These rules ensure the layout, typography, cards, and columns look proportional,
+  crisp, and balanced instead of shrunk, stretched, or cramped.
+*/
+
+@media (min-width: 1500px) {
+  :root {
+    --sidebar-width: 280px;
+  }
+
+  html {
+    font-size: 16.5px; /* Keeps text crisp and perfectly readable at 80% zoom */
+  }
+
+  .kanban-columns-grid {
+    gap: 22px;
+  }
+
+  .kanban-column {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .task-card {
+    padding: 16px 16px 14px;
+    border-radius: 14px;
+  }
+
+  .metric-card {
+    padding: 20px 22px;
+    border-radius: 16px;
+  }
+
+  .search-box {
+    width: 320px;
+  }
+}
+
+@media (min-width: 1900px) {
+  :root {
+    --sidebar-width: 300px;
+    --topbar-height: 76px;
+  }
+
+  html {
+    font-size: 17.5px; /* Accurately counters the downscaling of 80% zoom on 1080p monitors */
+  }
+
+  .app-main {
+    padding: 0 44px 64px;
+  }
+
+  .app-topbar {
+    margin: 0 -44px 28px;
+    padding: 0 44px;
+  }
+
+  .kanban-columns-grid {
+    gap: 24px;
+  }
+
+  .kanban-column {
+    min-height: 560px;
+    padding: 20px;
+  }
+
+  .task-card {
+    padding: 18px 18px 15px;
+  }
+
+  .search-box {
+    width: 350px;
+  }
+
+  .metric-card {
+    padding: 22px 24px;
+  }
+
+  .metric-number {
+    font-size: 1.85rem;
+  }
+
+  .page-title {
+    font-size: 1.6rem;
+  }
+}
+
+@media (min-width: 2400px) {
+  :root {
+    --sidebar-width: 320px;
+  }
+
+  html {
+    font-size: 18.5px; /* For ultra-high-resolution or 80% zoom on 1440p+ displays */
+  }
+
+  .app-main {
+    padding: 0 52px 76px;
+  }
+
+  .app-topbar {
+    margin: 0 -52px 32px;
+    padding: 0 52px;
+  }
+
+  .kanban-columns-grid {
+    gap: 28px;
   }
 }
