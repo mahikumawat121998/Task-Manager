@@ -27,9 +27,16 @@ export async function connectToDatabase() {
   }
 
   if (!cached.promise) {
+    try {
+      dns.setServers(['8.8.8.8', '1.1.1.1']);
+      console.log('📡 Active DNS servers for MongoDB connection:', dns.getServers());
+    } catch (e) {
+      console.warn('Could not set custom DNS servers:', e.message);
+    }
+
     const opts = {
       bufferCommands: false,
-      serverSelectionTimeoutMS: 5000,
+      serverSelectionTimeoutMS: 8000,
     };
 
     cached.promise = mongoose

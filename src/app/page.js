@@ -5,7 +5,7 @@ import {
   Plus, Search, Moon, Sun, Volume2, VolumeX,
   Kanban, ListTodo, CheckCircle2,
   Clock, AlertTriangle, Trash2, Edit3, X,
-  Calendar, Check, Database, RefreshCw, Upload, Download, Sparkles,
+  Calendar, Check, RefreshCw, Upload, Download, Sparkles,
   Layers, Menu
 } from 'lucide-react';
 
@@ -692,7 +692,7 @@ export default function TaskFlowApp() {
             <li className={`nav-item ${currentView === 'kanban' ? 'active' : ''}`}>
               <button className="nav-link" onClick={() => setCurrentView('kanban')}>
                 <Kanban size={17} />
-                <span>Kanban Board</span>
+                <span>Workflow Board</span>
                 <span className="nav-badge">{tasks.length}</span>
               </button>
             </li>
@@ -799,27 +799,17 @@ export default function TaskFlowApp() {
               </button>
               <div className="page-title-group">
                 <h1 className="page-title">
-                  {currentView === 'kanban' ? 'Kanban Board' : 'Task List'}
+                  {currentView === 'kanban' ? 'Workflow Board' : 'Task List'}
                 </h1>
                 <p className="page-subtitle">
                   {currentView === 'kanban'
-                    ? 'Drag, organize, and advance tasks across workflow stages.'
-                    : 'Dense filterable view with inline status and subtask progress.'}
+                    ? 'Organize tasks across workflow stages.'
+                    : 'Track tasks and progress.'}
                 </p>
               </div>
             </div>
 
             <div className="topbar-right">
-              {/* MongoDB Connection Status Pill */}
-              <div
-                className={`db-status-chip ${dbStatus.connected ? 'connected' : 'memory-mode'}`}
-                title={dbStatus.message}
-              >
-                <span className="status-pulsing-dot" />
-                <Database size={14} />
-                <span>{dbStatus.connected ? 'MongoDB Active' : 'Demo Memory Mode'}</span>
-              </div>
-
               {/* Global Search Input */}
               <div className="search-box">
                 <Search className="search-icon" size={16} />
@@ -1685,7 +1675,7 @@ export default function TaskFlowApp() {
               </div>
               <div className="shortcut-item">
                 <kbd>1</kbd> / <kbd>2</kbd>
-                <span>Switch View (Kanban / List)</span>
+                <span>Switch View (Workflow Board / List)</span>
               </div>
               <div className="shortcut-item">
                 <kbd>T</kbd>

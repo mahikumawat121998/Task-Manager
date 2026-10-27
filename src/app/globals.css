@@ -488,6 +488,7 @@ html, body {
 .page-subtitle {
   font-size: 0.8rem;
   color: var(--text-muted);
+  white-space: nowrap;
 }
 
 .topbar-right {
